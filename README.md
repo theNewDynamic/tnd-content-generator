@@ -6,8 +6,13 @@ A Data Set generator built with [Mockaroo](https://www.mockaroo.com/) and Hugo
 
 We use [Mockaroo](https://www.mockaroo.com/projects/30833) to generate the data files. 
 
-### We use Hugo to browser the data files and create markdown files accordingly.
+We use Hugo to browse the data files and create markdown files accordingly.
 
+## Setup
+
+1. Clone/Download
+2. `$ hugo`
+3. Navigate to `/generated_content` to see freshly generated markdown files.
 ## Collections
 
 Available collections
