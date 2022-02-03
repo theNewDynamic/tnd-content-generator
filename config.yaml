@@ -13,7 +13,12 @@ params:
   format: yaml
   collections:
     - name: profiles
+      content:
+      min: 0
+      max: 2
     - name: posts
+      content:
+        min: 3
+        max: 10
     - name: events
     - name: products
-      iterations: 5

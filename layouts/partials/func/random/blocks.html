@@ -1,0 +1,22 @@
+{{ $blocks := slice }}
+{{ with partial "func/random/number" $ }}
+  {{ with . }}
+    {{ range seq . }}
+      {{ $available_blocks := slice 
+        "paragraph"
+        "paragraph"
+        "paragraph"
+        "paragraph"
+        "paragraph"
+        "image"
+        "sentence"
+        "shortcode--notice"
+        "blockquote" | shuffle }}
+      {{ $block := index $available_blocks 0 }}
+      {{ with partial (printf "func/random/block/%s" $block) $block }}
+        {{ $blocks = $blocks | append . }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ return $blocks }}

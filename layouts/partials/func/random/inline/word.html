@@ -1,0 +1,10 @@
+{{ $word := "" }}
+{{ with partialCached "func/GetWords" "GetWords" }}
+  {{ with shuffle . | first 1 }}
+    {{ with index . 0 }}
+    {{ $word = . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ return $word }}

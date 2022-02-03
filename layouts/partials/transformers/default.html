@@ -15,18 +15,19 @@
   {{ with .date }}
     {{ $s.SetInMap "data" "date" . }}
   {{ end }}
-  {{ with .content }}
-    {{ $s.SetInMap "data" "content" . }}
-  {{ end }}
-  {{ $content := slice }}
+
+  {{ $content_blocks := slice }}
+
   {{ with .content_1 }}
-    {{ $content = $content | append . }}
+    {{ $content_blocks = $content_blocks | append . }}
   {{ end }}
-  {{ with .content_2 }}
-    {{ $content = $content | append . }}
+
+  {{ with partial "func/random/blocks" $.content }}
+    {{ $content_blocks = $content_blocks | append . }}
   {{ end }}
-  {{ with $content }}
-    {{ $s.SetInMap "data" "content" (delimit $content "\n\n") }}
+
+  {{ with $content_blocks }}
+    {{ $s.SetInMap "data" "content" (delimit $content_blocks "\n\n") }}
   {{ end }}
 
   {{ with .tags }}

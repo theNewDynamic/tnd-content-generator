@@ -1,0 +1,4 @@
+{{ $image := "" }}
+{{ $image := printf "/uploads/%s.jpg" (partial "func/random/inline/word" "word") }}
+{{ $title := partial "func/random/block/sentence" "sentence" }}
+{{ return printf "![Alternative text](%s) \"%s\"" $image $title }}

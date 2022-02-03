@@ -1,0 +1,2 @@
+{{ $numbers := seq .min .max | shuffle | first 1 }}
+{{ return index $numbers 0 }}
