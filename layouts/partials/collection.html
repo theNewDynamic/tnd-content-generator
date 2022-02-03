@@ -1,0 +1,34 @@
+
+{{ $format := $.format | default site.Params.format | default "json" }}
+
+{{ $limit := 1 }}
+{{ with $.iterations }}
+  {{ $limit = . }}
+{{ end }}
+
+{{ $info_number := 0 }}
+{{ range $iteration := seq 1 $limit }}
+  {{ with index site.Data $.name }}
+    {{ $info_number = add $info_number (len .) }}
+    {{ range . }}
+      {{ $entry := partial (printf "transformers/default") (dict 
+        "iteration" $iteration 
+        "data" .
+      ) }}
+      {{ $filename := printf "content/%s/%s.md" $.name (urlize $entry.title) }}
+      {{ $file := dict }}
+      {{ if eq $format "json" }}
+        {{ $string := print (jsonify $entry) " " $entry.content }}
+        {{ $file = $string | resources.FromString $filename }}
+      {{ else if eq $format "yaml" }}
+        {{ $yaml_template := resources.Get "entry.yaml" }}
+        {{ $file = $yaml_template | resources.ExecuteAsTemplate $filename $entry }}
+      {{ end }}
+      {{ $file.Publish }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ return (dict
+  "number" $info_number
+) }}

@@ -1,0 +1,11 @@
+{{ $collections := site.Params.collections | default (slice
+  (dict "name" "posts")
+  (dict "name" "profiles")
+) }}
+{{ range $collection := $collections }}
+  {{ with partial "collection" . }}
+    {{ warnf "We created %v %s" .number $collection.name }}
+  {{ end }}
+{{ end }}
+
+{{ return true }}

@@ -1,0 +1,84 @@
+{{ $s := newScratch }}
+{{ $s.Set "data" dict }}
+{{ with .data }}
+  {{ with .id }}
+    {{ $s.SetInMap "data" "id" (print . $.type $.iteration | md5)}}
+  {{ end }}
+  {{ $title := .title }}
+  {{ if gt 1 $.iteration }}
+    {{ $title = printf "%s %v" $title $.iteration }}
+  {{ end }}
+  {{ $s.SetInMap "data" "title" $title }}
+  {{ with .price }}
+    {{ $s.SetInMap "data" "price" . }}
+  {{ end }}
+  {{ with .date }}
+    {{ $s.SetInMap "data" "date" . }}
+  {{ end }}
+  {{ with .content }}
+    {{ $s.SetInMap "data" "content" . }}
+  {{ end }}
+  {{ $content := slice }}
+  {{ with .content_1 }}
+    {{ $content = $content | append . }}
+  {{ end }}
+  {{ with .content_2 }}
+    {{ $content = $content | append . }}
+  {{ end }}
+  {{ with $content }}
+    {{ $s.SetInMap "data" "content" (delimit $content "\n\n") }}
+  {{ end }}
+
+  {{ with .tags }}
+    {{ $s.SetInMap "data" "tags" . }}
+  {{ end }}
+  {{ with .categories }}
+    {{ $s.SetInMap "data" "categories" . }}
+  {{ end }}
+  {{ with .description }}
+    {{ $s.SetInMap "data" "description" . }}
+  {{ end }}
+  {{ if eq $.type "post" }}
+    {{ $profiles := site.Data.profiles }}
+    {{ with index ($profiles | shuffle) 0 }}
+      {{ with urlize .title }}
+        {{ $s.SetInMap "data" "authors" (slice (printf "/profile/%s.md" .)) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ $download := false }}
+
+  {{ with .image }}
+    {{ if $download }}
+      {{ with resources.GetRemote . }}
+        {{ with $copy := . | resources.Copy (printf "static/uploads/%s" .Name) }}
+          {{ $copy.RelPermalink }}
+          {{ $s.SetInMap "data" "image" . }}
+        {{ end }}
+      {{ end }}
+    {{ else }}
+      {{ with split . "?" }}
+        {{ with index . 0 }}
+          {{ $s.SetInMap "data" "image" . }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  {{ with .image_data }}
+    {{ $s.SetInMap "data" "image" (printf "https://placeimg.com/%v/%v/any" .width .height) }}
+  {{ end }}
+
+  {{ with .location }}
+    {{ $s.SetInMap "data" "location" . }}
+  {{ end }}
+
+  {{ with .sizes }}
+    {{ $s.SetInMap "data" "sizes" . }}
+  {{ end }}
+
+{{ end }}
+
+
+
+{{ return $s.Get "data" }}

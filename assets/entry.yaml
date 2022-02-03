@@ -1,0 +1,9 @@
+---
+{{- range $key := partialCached "yaml/GetKeys" "GetKeys" -}}
+  {{- with index $ $key }}
+{{ $key }}:{{ partial "yaml/default" . }}
+{{- end -}}
+{{- end }}
+---
+
+{{ .content }}

@@ -1,0 +1,19 @@
+disableKinds:
+- sitemap
+- taxonomy
+- term
+outputs:
+  home:
+  - html
+caches:
+  getresource:
+    maxAge: 0
+publishDir: generated_content
+params:
+  format: yaml
+  collections:
+    - name: profiles
+    - name: posts
+    - name: events
+    - name: products
+      iterations: 5
