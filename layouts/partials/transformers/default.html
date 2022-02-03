@@ -5,7 +5,7 @@
     {{ $s.SetInMap "data" "id" (print . $.type $.iteration | md5)}}
   {{ end }}
   {{ $title := .title }}
-  {{ if gt 1 $.iteration }}
+  {{ if gt $.iteration 1 }}
     {{ $title = printf "%s %v" $title $.iteration }}
   {{ end }}
   {{ $s.SetInMap "data" "title" $title }}
