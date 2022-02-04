@@ -22,7 +22,7 @@
     {{ $content_blocks = $content_blocks | append . }}
   {{ end }}
 
-  {{ with partial "func/random/blocks" $.content }}
+  {{ with partial "random/content/blocks" $.content }}
     {{ $content_blocks = $content_blocks | append . }}
   {{ end }}
 

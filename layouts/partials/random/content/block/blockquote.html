@@ -1,5 +1,5 @@
 {{ $blockquote := "" }}
-{{ with partial "func/random/block/paragraph" "paragraph" }}
+{{ with partial "random/content/block/paragraph" "paragraph" }}
 {{ $blockquote = printf "> %s" . }}
 {{ end }}
 {{ return $blockquote }}

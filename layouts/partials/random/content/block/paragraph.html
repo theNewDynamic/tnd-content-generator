@@ -11,7 +11,7 @@
 {{ $p_words = $p_words | complement (partialCached "func/GetCommonWords" "GetCommonWords") }}
 
 {{ range $inline := slice "*" "_" "**" }}
-  {{ $number := partial "func/random/number" (slice 0 2) }}
+  {{ $number := partial "random/number" (slice 0 2) }}
   {{ if $number }}
     {{/* We split the paragraph into an array of words, shuffle it, and grab the first X words. */}}
     {{ range $p_words | shuffle | first $number }}

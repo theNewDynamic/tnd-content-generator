@@ -1,0 +1,8 @@
+{{ $heading := "" }}
+{{ $number := partial "random/number" (slice 2 5) }}
+{{ $level := partial "random/number" (slice 2 3) }}
+{{ with $words := partial "random/content/inline/words" $number }}
+{{ $heading = printf "%s %s" (strings.Repeat $level "#") (delimit . " ") }}
+{{ end }}
+
+{{ return $heading }}

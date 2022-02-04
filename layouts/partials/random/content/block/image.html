@@ -1,6 +1,6 @@
 {{ $image := "" }}
-{{ $words := partial "func/random/inline/words" 2 }}
+{{ $words := partial "random/content/inline/words" 2 }}
 {{ $image := printf "/uploads/%s.jpg" (delimit $words "-") }}
 {{ $alt := delimit $words " " | printf "A picture of %s" }}
-{{ $title := partial "func/random/block/sentence" "sentence" }}
+{{ $title := partial "random/content/block/sentence" "sentence" }}
 {{ return printf "![%s](%s) \"%s\"" $alt $image $title }}

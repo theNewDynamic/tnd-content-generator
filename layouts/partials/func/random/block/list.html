@@ -1,3 +1,0 @@
-{{- $number := partial "func/random/number" (dict "min" 4 "max" 10) -}}
-{{- $words := apply (partial "func/random/inline/words" $number) "printf" "- %s" "." -}}
-{{ return delimit $words "\n" }}

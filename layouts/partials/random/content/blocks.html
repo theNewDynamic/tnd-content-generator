@@ -1,5 +1,5 @@
 {{ $blocks := slice }}
-{{ with partial "func/random/number" $ }}
+{{ with partial "random/number" $ }}
   {{ with . }}
     {{ range seq . }}
       {{ $available_blocks := slice 
@@ -19,7 +19,7 @@
         "table"
         "blockquote" }}
       {{ $block := index ($available_blocks | shuffle) 0 }}
-      {{ with partial (printf "func/random/block/%s" $block) $block }}
+      {{ with partial (printf "random/content/block/%s" $block) $block }}
         {{ $blocks = $blocks | append . }}
       {{ end }}
     {{ end }}
