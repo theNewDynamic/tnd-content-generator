@@ -77,6 +77,21 @@
   {{ with .sizes }}
     {{ $s.SetInMap "data" "sizes" . }}
   {{ end }}
+  {{ $slice_test := slice
+    (dict "title" "bonjour" "url" "https://google.com")
+    (dict 
+      "title" "hola" 
+      "url" "https://google.es"
+      "cta" (dict
+        "text" "lorem my boy"
+      )
+    )
+  }}
+  {{ $s.SetInMap "data" "test" $slice_test }}
+  {{ if false }}
+  {{ $s.SetInMap "data" "blocks" (partial "random/front-matter/blocks") }}
+  {{ end }}
+
 
 {{ end }}
 

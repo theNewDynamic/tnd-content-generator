@@ -1,0 +1,16 @@
+{{ $blocks := slice }}
+{{ with partial "random/number" $ }}
+  {{ with . }}
+    {{ range seq . }}
+      {{ $available_blocks := slice 
+        "section"
+        "columns"
+      }}
+      {{ $block := index ($available_blocks | shuffle) 0 }}
+      {{ with partial (printf "random/front-matter/block/%s" $block) $block }}
+        {{ $blocks = $blocks | append . }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ return $blocks }}

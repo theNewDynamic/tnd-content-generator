@@ -1,0 +1,7 @@
+{{ $texts := slice "Read more" "Click" "Try it" "Subsribe" | shuffle  }}
+{{ return dict
+  "cta" (dict
+    "text" (index $texts 0)
+    "url" (partial "random/url")
+  )
+}}

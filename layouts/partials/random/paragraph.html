@@ -1,0 +1,10 @@
+{{ $p := "" }}
+{{ with partialCached "func/GetParagraphs" "GetParagraphs" }}
+  {{ with shuffle . | first 1 }}
+    {{ with index . 0 }}
+    {{ $p = . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ return $p }}

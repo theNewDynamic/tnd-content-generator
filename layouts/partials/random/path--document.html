@@ -1,0 +1,3 @@
+{{ $words := partial "random/content/inline/words" 2 }}
+{{ $image := printf "/uploads/%s.pdf" (delimit $words "-") }}
+{{ return $image }}

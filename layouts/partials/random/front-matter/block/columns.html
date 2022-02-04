@@ -1,0 +1,14 @@
+{{ return dict 
+ "title" (partial "random/sentence")
+ "layout" "columns"
+ "columns" (slice
+  (dict
+    "heading" (partial "random/sentence")
+    "image" (partial "random/path--image")
+  )
+  (dict
+    "heading" (partial "random/sentence")
+    "image" (partial "random/path--image")
+  )
+ )
+}}

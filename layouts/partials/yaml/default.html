@@ -1,6 +1,6 @@
 {{- if reflect.IsSlice . -}}
 {{- partial "yaml/slice" . -}}
-{{- else if reflect.IsMap . -}}
-{{- partial "yaml/map" . -}}
+{{- else if reflect.IsMap . }}
+  {{- partial "yaml/map" . -}}
 {{- else }} {{ . -}}
 {{- end -}}
