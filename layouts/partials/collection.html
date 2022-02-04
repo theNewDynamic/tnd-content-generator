@@ -20,10 +20,16 @@
         "content" $content
         "data" .
       ) }}
-      {{ $filename := printf "content/%s/%s.md" $.name (urlize $entry.title) }}
+      {{ $filename := printf "content/%s/%s.md" $.name (urlize $entry.front_matter.title) }}
       {{ $file := dict }}
-      {{ if eq $format "json" }}
-        {{ $string := print (jsonify $entry) " " $entry.content }}
+      {{ if eq $format "json" "yaml_raw" }}
+        {{ $front_matter := jsonify $entry.front_matter }}
+        {{ $string := print $front_matter "\n\n" $entry.content }}
+        {{ if eq $format "yaml_raw" }}
+          {{ $front_matter = $front_matter | transform.Remarshal "yaml" }}
+          {{ $string = printf "---\n%s---\n\n%s" $front_matter $entry.content }}
+        {{ end }}
+        
         {{ $file = $string | resources.FromString $filename }}
       {{ else if eq $format "yaml" }}
         {{ $yaml_template := resources.Get "entry.yaml" }}

@@ -1,5 +1,7 @@
 {{ $s := newScratch }}
 {{ $s.Set "data" dict }}
+{{ $s.Set "body" dict }}
+
 {{ with .data }}
   {{ with .id }}
     {{ $s.SetInMap "data" "id" (print . $.type $.iteration | md5)}}
@@ -27,7 +29,7 @@
   {{ end }}
 
   {{ with $content_blocks }}
-    {{ $s.SetInMap "data" "content" (delimit $content_blocks "\n\n") }}
+    {{ $s.Set "content" (delimit $content_blocks "\n\n") }}
   {{ end }}
 
   {{ with .tags }}
@@ -77,24 +79,17 @@
   {{ with .sizes }}
     {{ $s.SetInMap "data" "sizes" . }}
   {{ end }}
-  {{ $slice_test := slice
-    (dict "title" "bonjour" "url" "https://google.com")
-    (dict 
-      "title" "hola" 
-      "url" "https://google.es"
-      "cta" (dict
-        "text" "lorem my boy"
-      )
-    )
-  }}
-  {{ $s.SetInMap "data" "test" $slice_test }}
-  {{ if false }}
-  {{ $s.SetInMap "data" "blocks" (partial "random/front-matter/blocks") }}
+  
+  {{ if true }}
+    {{ $s.SetInMap "data" "blocks" (partial "random/front-matter/blocks") }}
   {{ end }}
-
 
 {{ end }}
 
 
 
-{{ return $s.Get "data" }}
+{{ return (dict
+  "front_matter" ($s.Get "data")
+  "content" ($s.Get "content")
+  )
+}}

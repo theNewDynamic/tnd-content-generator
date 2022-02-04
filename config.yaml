@@ -10,7 +10,7 @@ caches:
     maxAge: 0
 publishDir: generated_content
 params:
-  format: yaml
+  format: yaml_raw
   collections:
     - name: profiles
       content:
@@ -21,3 +21,5 @@ params:
         min: 3
         max: 10
     - name: events
+    - name: products
+      iterations: 3
