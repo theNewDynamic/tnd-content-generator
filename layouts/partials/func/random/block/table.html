@@ -1,0 +1,7 @@
+{{- $cols_number := partial "func/random/number" (dict "min" 2 "max" 5) -}}
+{{- $rows_number := partial "func/random/number" (dict "min" 2 "max" 8) -}}
+{{ delimit (partial "func/random/inline/words" $cols_number) "|" }}
+{{ delimit (apply (seq 1 $cols_number) "print" "---") "|" }}
+{{- range seq 1 $rows_number }}
+{{ delimit (partial "func/random/inline/words" $cols_number) "|" }}
+{{- end -}}

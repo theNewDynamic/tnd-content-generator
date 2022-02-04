@@ -22,4 +22,4 @@ params:
         max: 10
     - name: events
     - name: products
-      iterations: 5
+      iterations: 1

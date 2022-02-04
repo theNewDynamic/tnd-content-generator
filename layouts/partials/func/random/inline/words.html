@@ -1,0 +1,8 @@
+{{ $words := slice }}
+{{ with partialCached "func/GetWords" "GetWords" }}
+  {{ with shuffle . | first $ }}
+    {{ $words = . }}
+  {{ end }}
+{{ end }}
+
+{{ return $words }}
