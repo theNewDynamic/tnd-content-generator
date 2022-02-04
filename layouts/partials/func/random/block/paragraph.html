@@ -7,4 +7,19 @@
   {{ end }}
 {{ end }}
 
+{{ $p_words := split $p " " }}
+{{ $p_words = $p_words | complement (partialCached "func/GetCommonWords" "GetCommonWords") }}
+
+{{ range $inline := slice "*" "_" "**" }}
+  {{ $number := partial "func/random/number" (slice 0 2) }}
+  {{ if $number }}
+    {{/* We split the paragraph into an array of words, shuffle it, and grab the first X words. */}}
+    {{ range $p_words | shuffle | first $number }}
+      {{/* For randomly seledted words, we replace their occurence with a md strong */}}
+      {{ $p = replace $p (printf " %s " .) (printf " %s%s%s " $inline . $inline) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+
 {{ return $p }}

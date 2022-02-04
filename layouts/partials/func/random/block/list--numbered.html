@@ -1,0 +1,7 @@
+{{ $limit := partial "func/random/number" (dict "min" 4 "max" 10) -}}
+{{ $bullets := slice }}
+{{ range $index := seq 1 $limit }}
+  {{ $words := partial "func/random/inline/words" (partial "func/random/number" (slice 2 8)) }}
+  {{ $bullets = $bullets | append (printf "%x. %s" $index (delimit $words " ")) }}
+{{ end }}
+{{ return delimit $bullets "\n" }}

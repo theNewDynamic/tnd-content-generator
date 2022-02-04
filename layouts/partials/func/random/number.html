@@ -1,2 +1,15 @@
-{{ $numbers := seq .min .max | shuffle | first 1 }}
-{{ return index $numbers 0 }}
+{{ $min := 1 }}
+{{ $max := 10 }}
+{{ $number := 0 }}
+{{ if reflect.IsMap $ }}
+  {{ $min = .min }}
+  {{ $max = .max }}
+{{ else if reflect.IsSlice $ }}
+  {{ $min = index $ 0 }}
+  {{ $max = index $ 1 }}
+{{ end }}
+
+{{ $numbers := seq $min $max | shuffle | first 1 }}
+{{ $number = index $numbers 0 }}
+
+{{ return $number }}
