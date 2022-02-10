@@ -1,9 +1,15 @@
-
 {{ $format := $.format | default site.Params.format | default "json" }}
 
-{{ $limit := 1 }}
-{{ with $.iterations }}
-  {{ $limit = . }}
+{{ $limit := $.limit | default 1000 }}
+
+{{ $iterations := 1 }}
+{{ $last_iteration_limit := $limit }}
+
+{{ if gt $limit 1000 }}
+  {{/* div between two integer floors the result, 
+    we need to add 1 to simulate a ceiling on a float result */}}
+  {{ $iterations = div $limit 1000 | add 1 }}
+  {{ $last_iteration_limit = sub $limit (mul (sub $iterations 1) 1000) }}
 {{ end }}
 
 {{ $content := dict "min" 1 "max" 5 }}
@@ -11,35 +17,48 @@
   {{ $content = merge $content . }}
 {{ end }}
 {{ $info_number := 0 }}
-{{ range $iteration := seq 1 $limit }}
-  {{ with index site.Data $.name }}
-    {{ $info_number = add $info_number (len .) }}
-    {{ range . }}
+
+{{ $data := index site.Data $.name }}
+
+
+{{ range $current := seq 1 $iterations }}
+  {{ with $data }}
+    {{ $entries := slice }}
+    {{/* We test if we're on the last iteration */}}
+    {{ if eq $current $iterations }}
+      {{ $entries = first $last_iteration_limit . }}
+    {{ else }}
+      {{ $entries = . }}
+    {{ end }}
+
+    {{ range $entries }}
       {{ $entry := partial (printf "transformers/default") (dict 
-        "iteration" $iteration
+        "iteration" $current
         "content" $content
         "data" .
       ) }}
       {{ $filename := printf "content/%s/%s.md" $.name (urlize $entry.front_matter.title) }}
       {{ $file := dict }}
-      {{ if eq $format "json" "yaml_raw" }}
+      {{ if eq $format "json" "yaml" }}
         {{ $front_matter := jsonify $entry.front_matter }}
         {{ $string := print $front_matter "\n\n" $entry.content }}
-        {{ if eq $format "yaml_raw" }}
+        {{ if eq $format "yaml" }}
           {{ $front_matter = $front_matter | transform.Remarshal "yaml" }}
           {{ $string = printf "---\n%s---\n\n%s" $front_matter $entry.content }}
         {{ end }}
         
         {{ $file = $string | resources.FromString $filename }}
-      {{ else if eq $format "yaml" }}
+      {{ else if eq $format "yaml_custom" }}
         {{ $yaml_template := resources.Get "entry.yaml" }}
         {{ $file = $yaml_template | resources.ExecuteAsTemplate $filename $entry }}
       {{ end }}
       {{ $file.Publish }}
+      {{ $info_number = add $info_number 1 }}
     {{ end }}
   {{ end }}
 {{ end }}
 
 {{ return (dict
   "number" $info_number
+  "duplicates" (len (partial "duplicates" $data))
 ) }}

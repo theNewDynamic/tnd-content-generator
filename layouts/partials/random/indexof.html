@@ -1,0 +1,9 @@
+{{ $item := "" }}
+{{ if reflect.IsSlice $ }}
+  {{ $maxIndex := (sub (len $) 1) }}
+  {{ $index := partial "random/number" (slice 0 $maxIndex) }}
+  {{ with index $ $index }}
+    {{ $item = . }}
+  {{ end }}
+{{ end }}
+{{ return $item }}

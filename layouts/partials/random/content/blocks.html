@@ -18,6 +18,9 @@
         "shortcode--notice"
         "table"
         "blockquote" }}
+      {{ with $.blocks }}
+        {{ $available_blocks = . }}
+      {{ end }}
       {{ $block := index ($available_blocks | shuffle) 0 }}
       {{ with partial (printf "random/content/block/%s" $block) $block }}
         {{ $blocks = $blocks | append . }}

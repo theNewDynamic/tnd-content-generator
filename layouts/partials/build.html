@@ -4,7 +4,11 @@
 ) }}
 {{ range $collection := $collections }}
   {{ with partial "collection" . }}
-    {{ warnf "We created %v %s" .number $collection.name }}
+    {{ $string := printf "We created %v %s" .number $collection.name }}
+    {{ with .duplicates }}
+      {{ $string = printf "%s and found %v duplicates" . }}
+    {{ end }}
+    {{ warnf "%s" $string }}
   {{ end }}
 {{ end }}
 

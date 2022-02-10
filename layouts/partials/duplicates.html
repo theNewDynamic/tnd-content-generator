@@ -1,0 +1,10 @@
+{{ $data := . }}
+{{ $duplicates := slice }}
+{{ range $data }}
+  {{ with where $data "title" .title }}
+    {{ if gt (len .) 1 }}
+      {{ $duplicates = $duplicates | append (index . 0) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ return $duplicates }}

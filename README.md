@@ -22,9 +22,8 @@ Available collections
 - products
 
 ### Collection parameters
-Each collection can take a optional iteration and format parameter
 
-- **iterations**: An integer. This will create X time the number of elements in the data file.
+- **limit**: The number of entries to create for a given collection. Defaults to `1000`.
 - **format**: A string, only `yaml`|`json` for now. Wether each content file for the collection should be created as JSON or YAML
 
 ```yaml
