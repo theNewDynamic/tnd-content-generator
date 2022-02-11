@@ -1,0 +1,8 @@
+{{ $video := partial "random/video" }}
+{{ return dict 
+  "layout" "video"
+  "title" $video.title
+  "id" $video.id
+  "service" $video.service
+  "credits" $video.uploader
+}}

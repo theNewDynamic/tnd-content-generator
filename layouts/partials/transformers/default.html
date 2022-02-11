@@ -1,6 +1,5 @@
 {{ $s := newScratch }}
 {{ $s.Set "data" dict }}
-{{ $s.Set "body" dict }}
 
 {{ with $data := .data }}
   {{ with .id }}
@@ -89,56 +88,9 @@
     {{ $s.SetInMap "data" "sizes" . }}
   {{ end }}
 
-  {{/* This is for current work on https://github.com/theNewDynamic/retroreport.org/pull/703 */}}
-  {{ if false }}
-  {{ if eq .type "profile" }}
-    {{ $s.SetInMap "data" "description" (partial "random/paragraph") }}
-    {{ $profile_types := slice
-      "educators"
-      "ambassadors"
-    }}
-    {{ $s.SetInMap "data" "profile_type" (partial "random/indexof" $profile_types) }}
-    {{ with last 1 (split .title " ") }}
-      {{ with index . 0 }}
-        {{ $s.SetInMap "data" "last_name" . }}
-      {{ end }}
-    {{ end }}
-    {{ $cities := slice
-      "New York, NY"
-      "Los Angelees, CA"
-      "San Francisco, CA"
-      "Boston, MA"
-      "Philadelphia, PA"
-
-    }}
-    {{ $s.SetInMap "data" "location" (partial "random/indexof" $cities) }}
-    {{ $schools := slice
-    "Manhattan School of Children"
-    "P.S. 191"
-    "East Side Community High School"
-    "Grammar School No. 35"
-    }}
-    {{ $s.SetInMap "data" "school" (partial "random/indexof" $schools) }}
-    {{ $images := slice 
-      "cd76ed43-a8ed-4d40-8511-49fe23ed4e6e-6.JPG"
-      "nyweide-cropped.png"
-      "alexandra_wallace_headshot_cropped.jpg"
-      "1439920080119_board-nick-ascheim-300.jpg"
-    }}
-
-    {{ with partial "random/indexof" $images }}
-      {{ with printf "/uploads/%s" . }}
-        {{ $s.SetInMap "data" "image" . }}
-      {{ end }}
-    {{ end }}
-
-  {{ end }}
-  {{/* End of RetroReport only work */}}
-  {{ end }}
-
   {{/* This if for current work on front matter blocks */}}
-  {{ if false }}
-    {{ $s.SetInMap "data" "blocks" (partial "random/front-matter/blocks") }}
+  {{ with $.blocks }}
+    {{ $s.SetInMap "data" "blocks" (partial "random/front-matter/blocks" .) }}
   {{ end }}
 
 {{ end }}

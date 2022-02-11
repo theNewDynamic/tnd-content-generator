@@ -16,6 +16,13 @@
 {{ with .content }}
   {{ $content = merge $content . }}
 {{ end }}
+
+{{ $blocks := dict }}
+{{ with $.blocks }}
+  {{ $blocks = . }}
+{{ end }}
+
+
 {{ $info_number := 0 }}
 
 {{ $data := index site.Data $.name }}
@@ -31,12 +38,27 @@
       {{ $entries = . }}
     {{ end }}
 
-    {{ range $entries }}
+    {{ range $entry_data := $entries }}
       {{ $entry := partial (printf "transformers/default") (dict 
         "iteration" $current
         "content" $content
+        "blocks" $blocks
         "data" .
       ) }}
+      {{ with $.transformer }}
+        {{ $partial := printf "transformers/%s.html" . }}
+
+        {{ if templates.Exists (printf "partials/%s" $partial) }}
+          {{ with partial $partial (dict 
+            "iteration" $current
+            "content" $content
+            "blocks" $blocks
+            "data" $entry_data
+          ) }}
+          {{ $entry = merge $entry . }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
       {{ $filename := printf "content/%s/%s.md" $.name (urlize $entry.front_matter.title) }}
       {{ $file := dict }}
       {{ if eq $format "json" "yaml" }}

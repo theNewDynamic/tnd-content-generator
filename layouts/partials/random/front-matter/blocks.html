@@ -5,7 +5,13 @@
       {{ $available_blocks := slice 
         "section"
         "columns"
+        "video"
+        "cta"
+        "seperator"
       }}
+      {{ with $.blocks }}
+        {{ $available_blocks = . }}
+      {{ end }}
       {{ $block := index ($available_blocks | shuffle) 0 }}
       {{ with partial (printf "random/front-matter/block/%s" $block) $block }}
         {{ $blocks = $blocks | append . }}

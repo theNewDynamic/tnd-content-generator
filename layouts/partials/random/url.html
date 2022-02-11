@@ -1,7 +1,7 @@
 {{ $url := "" }}
 {{ with partialCached "func/GetURLs" "GetURLs" }}
   {{ with . | shuffle | first 1 }}
-    {{ $url = . }}
+    {{ $url = index . 0 }}
   {{ end }}
 {{ end }}
 {{ return $url }}
