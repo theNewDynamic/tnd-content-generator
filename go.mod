@@ -1,3 +1,3 @@
-module github.com/theNewDynamic/tnd-data-set-generator
+module github.com/theNewDynamic/tnd-content-generator
 
 go 1.16
