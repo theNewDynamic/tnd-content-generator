@@ -28,13 +28,37 @@ Available collections
 
 ```yaml
 params:
-  format: yaml
-  collections:
-  - name: profiles
-  - name: posts
-  - name: events
-  - name: products
-    iterations: 5
+  tnd_data_gen:
+    format: yaml
+    collections:
+    - name: profiles
+    - name: posts
+    - name: events
+    - name: products
+      limit: 3000
+```
+
+```yaml
+params:
+  tnd_data_gen:
+    format: yaml
+    collections:
+      - name: profiles
+        limit: 30
+        # transformer: retro_703
+        content:
+          min: 1
+          max: 1
+          blocks: 
+          - paragraph
+      - name: posts
+        limit: 140
+        content:
+          min: 1
+          max: 1
+        blocks:
+          min: 1
+          max: 5
 ```
 
 ### Future
