@@ -1,0 +1,6 @@
+{{ $images := slice }}
+{{ with resources.Match "/images/*" }}
+{{ $images = . }}
+{{ end }}
+
+{{ return $images }}

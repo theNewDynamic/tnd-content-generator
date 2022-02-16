@@ -1,4 +1,5 @@
-{{ $collections := site.Params.collections | default (slice
+{{ $params := site.Params.tnd_data_gen }}
+{{ $collections := $params.collections | default (slice
   (dict "name" "posts")
   (dict "name" "profiles")
 ) }}

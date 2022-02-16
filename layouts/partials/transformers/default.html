@@ -1,6 +1,6 @@
 {{ $s := newScratch }}
 {{ $s.Set "data" dict }}
-
+{{ $params := site.Params.tnd_data_gen }}
 {{ with $data := .data }}
   {{ with .id }}
     {{ $s.SetInMap "data" "id" (print . $.type $.iteration | md5)}}
@@ -23,7 +23,7 @@
     {{ $content_blocks = $content_blocks | append . }}
   {{ end }}
 
-  {{ with partial "random/content/blocks" $.content }}
+  {{ with partial "random/content/blocks" $.config.content }}
     {{ $content_blocks = $content_blocks | append . }}
   {{ end }}
 
@@ -40,16 +40,17 @@
   {{ with .description }}
     {{ $s.SetInMap "data" "description" . }}
   {{ end }}
-  {{ if eq $.type "post" }}
+
+  {{ if eq .type "post" }}
     {{ $profiles := site.Data.profiles }}
-    {{ with where site.Params.collections "mame" "profiles" }}
+    {{ with where $params.collections "name" "profiles" }}
       {{ with (index . 0).limit }}
         {{ $profiles = first . $profiles }}
       {{ end }}
     {{ end }}
     {{ with index ($profiles | shuffle) 0 }}
       {{ with urlize .title }}
-        {{ $s.SetInMap "data" "authors" (slice (printf "/profile/%s.md" .)) }}
+        {{ $s.SetInMap "data" "authors" (slice (printf "/profiles/%s.md" .)) }}
       {{ end }}
     {{ end }}
   {{ end }}
@@ -59,13 +60,11 @@
     {{ $s.SetInMap "data" "twitter_handle" . }}
   {{ end }}
 
-  {{ $download := false }}
-
   {{ with $url := .image }}
-    {{ if and $download (eq $data.type "profile") }}
+    {{ if and $.download (eq $data.type "profile") }}
       {{ with resources.GetRemote . }}
         {{ .Publish }}
-        {{ $s.SetInMap "data" "image" $url }}
+        {{ $s.SetInMap "data" "image" (printf "/images/avatars/%s" .RelPermalink) }}
       {{ end }}
     {{ else }}
       {{ with split . "?" }}
@@ -89,7 +88,7 @@
   {{ end }}
 
   {{/* This if for current work on front matter blocks */}}
-  {{ with $.blocks }}
+  {{ with $.config.blocks }}
     {{ $s.SetInMap "data" "blocks" (partial "random/front-matter/blocks" .) }}
   {{ end }}
 

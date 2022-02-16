@@ -1,4 +1,6 @@
-{{ $format := $.format | default site.Params.format | default "json" }}
+{{ $params := site.Params.tnd_data_gen }}
+
+{{ $format := $.format | default $params.format | default "json" }}
 
 {{ $limit := $.limit | default 1000 }}
 
@@ -22,6 +24,13 @@
   {{ $blocks = . }}
 {{ end }}
 
+{{ $download := $.download | default false }}
+
+{{ $config := dict
+  "content" $content
+  "blocks" $blocks
+  "download" $download
+}}
 
 {{ $info_number := 0 }}
 
@@ -41,8 +50,7 @@
     {{ range $entry_data := $entries }}
       {{ $entry := partial (printf "transformers/default") (dict 
         "iteration" $current
-        "content" $content
-        "blocks" $blocks
+        "config" $config
         "data" .
       ) }}
       {{ with $.transformer }}

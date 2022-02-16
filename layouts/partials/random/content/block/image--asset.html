@@ -1,0 +1,6 @@
+{{ $image := "" }}
+{{ $words := partial "random/content/inline/words" 2 }}
+{{ $image := partial "random/image" }}
+{{ $alt := delimit $words " " | printf "A picture of %s" }}
+{{ $title := partial "random/content/block/sentence" "sentence" }}
+{{ return printf "![%s](%s) \"%s\"" $alt $image.RelPermalink $title }}
