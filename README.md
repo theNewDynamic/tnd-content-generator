@@ -45,7 +45,7 @@ params:
     collections:
       - name: profiles
         limit: 30
-        # transformer: retro_703
+        transformer: custom
         content:
           min: 1
           max: 1
