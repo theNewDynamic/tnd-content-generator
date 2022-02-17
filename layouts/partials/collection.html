@@ -59,9 +59,8 @@
         {{ if templates.Exists (printf "partials/%s" $partial) }}
           {{ with partial $partial (dict 
             "iteration" $current
-            "content" $content
-            "blocks" $blocks
-            "data" $entry_data
+            "content" $entry.content
+            "data" $entry.front_matter
           ) }}
           {{ $entry = merge $entry . }}
           {{ end }}
