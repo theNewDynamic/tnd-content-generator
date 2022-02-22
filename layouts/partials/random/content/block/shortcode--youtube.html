@@ -1,0 +1,5 @@
+{{ $shortcode := "" }}
+{{ with partial "random/video" }}
+{{ $shortcode = printf "{{< youtube %s >}}" .id }}
+{{ end }}
+{{ return $shortcode }}

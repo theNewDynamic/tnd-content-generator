@@ -1,5 +1,5 @@
 {{ $shortcode := "" }}
 {{ $p := partial "random/content/block/paragraph" "paragraph" }}
-{{ $title := partial "random/content/block/sentence" "sentence" }}
+{{ $title := partial "random/sentence" "sentence" }}
 {{ $shortcode = printf "{{< notice title=\"%s\" >}}\n%s\n{{< /notice >}}" $title $p }}
 {{ return $shortcode }}

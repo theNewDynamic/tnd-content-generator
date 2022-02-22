@@ -1,5 +1,5 @@
 {{ $words := slice }}
-{{ with partialCached "func/GetWords" "GetWords" }}
+{{ with partialCached "func/GetWords" "nouns" "nouns" }}
   {{ with shuffle . | first $ }}
     {{ $words = . }}
   {{ end }}

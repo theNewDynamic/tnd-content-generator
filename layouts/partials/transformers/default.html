@@ -5,7 +5,12 @@
   {{ with .id }}
     {{ $s.SetInMap "data" "id" (print . $.type $.iteration | md5)}}
   {{ end }}
+
   {{ $title := .title }}
+  {{ if eq $.config.title "words" }}
+    {{ $title = partial "random/sentence--new" }}
+    {{ $title = trim $title "." }}
+  {{ end }}
   {{ if gt $.iteration 1 }}
     {{ $title = printf "%s %v" $title $.iteration }}
   {{ end }}
@@ -48,10 +53,12 @@
         {{ $profiles = first . $profiles }}
       {{ end }}
     {{ end }}
-    {{ with index ($profiles | shuffle) 0 }}
-      {{ with urlize .title }}
-        {{ $s.SetInMap "data" "authors" (slice (printf "/profiles/%s.md" .)) }}
-      {{ end }}
+    {{ $profile_paths := slice }}
+    {{ range $index, $v := $profiles }}
+      {{ $profile_paths = $profile_paths | append (printf "profiles/%s-%v.md" (urlize .title) (add $index 1)) }}
+    {{ end }}
+    {{ with index ($profile_paths | shuffle) 0 }}
+        {{ $s.SetInMap "data" "authors" (slice .) }}
     {{ end }}
   {{ end }}
 
@@ -61,10 +68,10 @@
   {{ end }}
 
   {{ with $url := .image }}
-    {{ if and $.download (eq $data.type "profile") }}
+    {{ if and $.config.download (eq $data.type "profile") }}
       {{ with resources.GetRemote . }}
         {{ .Publish }}
-        {{ $s.SetInMap "data" "image" (printf "/images/avatars/%s" .RelPermalink) }}
+        {{ $s.SetInMap "data" "image" (printf "/images/avatars%s" .RelPermalink) }}
       {{ end }}
     {{ else }}
       {{ with split . "?" }}

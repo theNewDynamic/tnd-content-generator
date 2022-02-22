@@ -30,6 +30,7 @@
   "content" $content
   "blocks" $blocks
   "download" $download
+  "title" ($.title | default "")
 }}
 
 {{ $info_number := 0 }}
@@ -66,7 +67,8 @@
           {{ end }}
         {{ end }}
       {{ end }}
-      {{ $filename := printf "content/%s/%s.md" $.name (urlize $entry.front_matter.title) }}
+      {{ $info_number = add $info_number 1 }}
+      {{ $filename := printf "content/%s/%s-%d.md" $.name (urlize $entry.front_matter.title) $info_number }}
       {{ $file := dict }}
       {{ if eq $format "json" "yaml" }}
         {{ $front_matter := jsonify $entry.front_matter }}
@@ -82,7 +84,7 @@
         {{ $file = $yaml_template | resources.ExecuteAsTemplate $filename $entry }}
       {{ end }}
       {{ $file.Publish }}
-      {{ $info_number = add $info_number 1 }}
+      
     {{ end }}
   {{ end }}
 {{ end }}

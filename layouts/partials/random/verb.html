@@ -1,7 +1,5 @@
 {{ $word := "" }}
-{{ $type := $ | default "noun" }}
-{{ $type = pluralize $type }}
-{{ with partialCached "func/GetWords" $type $type }}
+{{ with partialCached "func/GetWords" "verbs" "verbs" }}
   {{ with shuffle . | first 1 }}
     {{ with index . 0 }}
     {{ $word = . }}

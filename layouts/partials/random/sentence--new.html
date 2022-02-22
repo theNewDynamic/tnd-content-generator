@@ -1,0 +1,22 @@
+{{ $plural := partial "random/indexof" (slice false false true) }}
+
+{{ $words := slice "The" }}
+
+{{ $noun := partial "random/word" "noun" }}
+{{ if $plural }}
+  {{ $noun = pluralize $noun }}
+{{ end }}
+{{ $words = $words | append $noun }}
+
+{{ $verbs := slice "is" "looks" "appears" }}
+{{ if $plural }}
+  {{ $verbs = slice "are" "look" "appear" }}
+{{ end }}
+{{ $words = $words | append (partial "random/indexof" $verbs) }}
+
+{{ $adjective := partial "random/word" "adjective" }}
+{{ $words = $words | append $adjective }}
+
+{{ $words = delimit $words " " }}
+{{ $words = print $words "." }}
+{{ return $words }}

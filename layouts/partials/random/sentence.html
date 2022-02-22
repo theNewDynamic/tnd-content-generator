@@ -1,10 +1,18 @@
 {{ $s := "" }}
+{{ $words_num := 0 }}
+{{ with $ }}
+  {{ $words_num = . }}
+{{ end }}
 {{ with partialCached "func/GetSentences" "GetSentences" }}
   {{ with shuffle . | first 1 }}
     {{ with index . 0 }}
-    {{ $s = . }}
+      {{ $s = . }}
+      {{ if $words_num }}
+        {{ $s = split $s " " | first $words_num }}
+        {{ $s = delimit $s " " }}
+        {{ $s = trim $s "." }}
+        {{ $s = trim $s "," }}
+      {{ end }}
     {{ end }}
   {{ end }}
 {{ end }}
-
-{{ return $s }}

@@ -1,1 +1,6 @@
-{{ return site.Data.pool.words }}
+{{ $words := . }}
+{{ $type := $ | default "nouns" }}
+{{ with index site.Data.pool $type }}
+  {{ $words = . }}
+{{ end }}
+{{ return $words }}
