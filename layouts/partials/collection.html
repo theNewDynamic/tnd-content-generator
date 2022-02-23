@@ -31,6 +31,7 @@
   "blocks" $blocks
   "download" $download
   "title" ($.title | default "")
+  "name" $.name
 }}
 
 {{ $info_number := 0 }}
@@ -40,7 +41,7 @@
 {{ $dir := or $.name $.pool }}
 
 {{ $data := index site.Data $pool }}
-
+{{ $front_matter := index $ "front-matter" | default dict }}
 {{ range $current := seq 1 $iterations }}
   {{ with $data }}
     {{ $entries := slice }}
@@ -63,6 +64,7 @@
         {{ if templates.Exists (printf "partials/%s" $partial) }}
           {{ with partial $partial (dict 
             "iteration" $current
+            "config" $config
             "content" $entry.content
             "data" $entry.front_matter
           ) }}
