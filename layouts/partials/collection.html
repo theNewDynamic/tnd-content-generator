@@ -35,8 +35,11 @@
 
 {{ $info_number := 0 }}
 
-{{ $data := index site.Data $.name }}
 
+{{ $pool := or $.pool $.name }}
+{{ $dir := or $.name $.pool }}
+
+{{ $data := index site.Data $pool }}
 
 {{ range $current := seq 1 $iterations }}
   {{ with $data }}
@@ -68,7 +71,7 @@
         {{ end }}
       {{ end }}
       {{ $info_number = add $info_number 1 }}
-      {{ $filename := printf "content/%s/%s-%d.md" $.name (urlize $entry.front_matter.title) $info_number }}
+      {{ $filename := printf "content/%s/%s-%d.md" $dir (urlize $entry.front_matter.title) $info_number }}
       {{ $file := dict }}
       {{ if eq $format "json" "yaml" }}
         {{ $front_matter := jsonify $entry.front_matter }}
